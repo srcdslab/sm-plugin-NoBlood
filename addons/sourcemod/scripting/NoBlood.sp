@@ -9,7 +9,7 @@ public Plugin myinfo =
 	name = "NoBlood",
 	author = "Bara, IT-KiLLER",
 	description = "Hide blood",
-	version = "1.0.1",
+	version = "1.0.2",
 	url = "https://github.com/IT-KiLLER"
 };
 
