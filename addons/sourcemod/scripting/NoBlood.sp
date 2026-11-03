@@ -9,7 +9,7 @@ public Plugin myinfo =
 	name = "NoBlood",
 	author = "Bara, IT-KiLLER",
 	description = "Hide blood",
-	version = "1.0",
+	version = "1.0.1",
 	url = "https://github.com/IT-KiLLER"
 };
 
@@ -23,7 +23,7 @@ public void OnPluginStart()
 	AddTempEntHook("Impact", TE_OnWorldDecal);
 }
 
-public Action TE_OnEffectDispatch(const char[] te_name, const Players[], int numClients, float delay)
+public Action TE_OnEffectDispatch(const char[] te_name, const int[] Players, int numClients, float delay)
 {
 	if (!g_cEnableNoBlood.BoolValue) return Plugin_Continue;
 
@@ -50,7 +50,7 @@ public Action TE_OnEffectDispatch(const char[] te_name, const Players[], int num
 	return Plugin_Continue;
 }
 
-public Action TE_OnWorldDecal(const char[] te_name, const Players[], int numClients, float delay)
+public Action TE_OnWorldDecal(const char[] te_name, const int[] Players, int numClients, float delay)
 {
 	if (!g_cEnableNoBlood.BoolValue) return Plugin_Continue;
 
