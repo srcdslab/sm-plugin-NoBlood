@@ -4,12 +4,18 @@
 
 ConVar g_cEnableNoBlood;
 
+// String table indexes, looked up once per map: the temp entity hooks run on every
+// bullet impact and blood effect
+int g_iParticleEffectNames = INVALID_STRING_TABLE;
+int g_iEffectDispatch = INVALID_STRING_TABLE;
+int g_iDecalPrecache = INVALID_STRING_TABLE;
+
 public Plugin myinfo = 
 {
 	name = "NoBlood",
 	author = "Bara, IT-KiLLER",
 	description = "Hide blood",
-	version = "1.0.1",
+	version = "1.0.2",
 	url = "https://github.com/IT-KiLLER"
 };
 
@@ -21,6 +27,14 @@ public void OnPluginStart()
 	AddTempEntHook("EffectDispatch", TE_OnEffectDispatch);
 	AddTempEntHook("World Decal", TE_OnWorldDecal);
 	AddTempEntHook("Impact", TE_OnWorldDecal);
+}
+
+public void OnMapStart()
+{
+	// The string tables are created again for each map
+	g_iParticleEffectNames = INVALID_STRING_TABLE;
+	g_iEffectDispatch = INVALID_STRING_TABLE;
+	g_iDecalPrecache = INVALID_STRING_TABLE;
 }
 
 public Action TE_OnEffectDispatch(const char[] te_name, const int[] Players, int numClients, float delay)
@@ -70,36 +84,30 @@ public Action TE_OnWorldDecal(const char[] te_name, const int[] Players, int num
 
 stock int GetParticleEffectName(int index, char[] sEffectName, int maxlen)
 {
-	int table = INVALID_STRING_TABLE;
-
-	if (table == INVALID_STRING_TABLE)
+	if (g_iParticleEffectNames == INVALID_STRING_TABLE)
 	{
-		table = FindStringTable("ParticleEffectNames");
+		g_iParticleEffectNames = FindStringTable("ParticleEffectNames");
 	}
 
-	return ReadStringTable(table, index, sEffectName, maxlen);
+	return ReadStringTable(g_iParticleEffectNames, index, sEffectName, maxlen);
 }
 
 stock int GetEffectName(int index, char[] sEffectName, int maxlen)
 {
-	int table = INVALID_STRING_TABLE;
-
-	if (table == INVALID_STRING_TABLE)
+	if (g_iEffectDispatch == INVALID_STRING_TABLE)
 	{
-		table = FindStringTable("EffectDispatch");
+		g_iEffectDispatch = FindStringTable("EffectDispatch");
 	}
 
-	return ReadStringTable(table, index, sEffectName, maxlen);
+	return ReadStringTable(g_iEffectDispatch, index, sEffectName, maxlen);
 }
 
 stock int GetDecalName(int index, char[] sDecalName, int maxlen)
 {
-	int table = INVALID_STRING_TABLE;
-
-	if (table == INVALID_STRING_TABLE)
+	if (g_iDecalPrecache == INVALID_STRING_TABLE)
 	{
-		table = FindStringTable("decalprecache");
+		g_iDecalPrecache = FindStringTable("decalprecache");
 	}
 
-	return ReadStringTable(table, index, sDecalName, maxlen);
+	return ReadStringTable(g_iDecalPrecache, index, sDecalName, maxlen);
 }
